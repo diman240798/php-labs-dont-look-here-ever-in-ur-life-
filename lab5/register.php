@@ -1,22 +1,41 @@
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:700,600' rel='stylesheet' type='text/css'>
 
-<form method="post">
+<script>
+    function click() {
+        alert('Пустой логин');
+
+        let email = document.getElementsByName('email');
+        let password = document.getElementsByName('password');
+        let passwordConfirm = document.getElementsByName('confirm-password');
+
+        if (!email || email.isEmpty()) {
+            alert('Пустой логин');
+            return false;
+        }
+
+        if (!password || password.isEmpty()) {
+            alert('Пустой пароль');
+            return false;
+        }
+
+        if (password !== passwordConfirm) {
+            alert('Пароли не совпадают');
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+<form method="post" onsubmit="">
     <div class="box">
-        <h1>Log in</h1>
+        <h1>Register</h1>
 
-        <input type="email" name="email" onFocus="field_focus(this, 'email');" onblur="field_blur(this, 'email');"
-               class="email"/>
+        <input type="text" name="email" onFocus="field_focus(this, 'email');" onblur="field_blur(this, 'email');" class="email"/>
+        <input type="text" name="password" onFocus="field_focus(this, 'email');" onblur="field_blur(this, 'email');" class="email"/>
+        <input type="text" name="confirm-password" onFocus="field_focus(this, 'email');" onblur="field_blur(this, 'email');" class="email"/>
 
-        <input type="password" name="password" onFocus="field_focus(this, 'email');" onblur="field_blur(this, 'email');"
-               class="email"/>
-
-        <a href="#">
-            <button type="submit" class="btn">Sign In</button>
-        </a> <!-- End Btn -->
-
-        <a href="/lab5/register.php">
-            <div id="btn2">Sign Up</div>
-        </a> <!-- End Btn2 -->
+        <button type="submit" onclick="return click()" id="btn2">Sign Up</button>
 
     </div>
 
@@ -30,22 +49,12 @@
 <?php
 $login = $_POST['email'];
 $password = $_POST['password'];
-if (file_exists("pass.txt")) {
-    if (isset($login) && isset($password)) {
-        $credArray = file("pass.txt");
-        foreach ($credArray as $cred) {
-            $creds = $cred . spliit("{:}");
-            $log = $creds[0];
-            $passHesh = $creds[1];
-            if ($login == $log && password_verify($password, $passHesh)) {
-                setcookie('login', $login);
-                echo "<script>window.location='/lab5/Main.php'</script>";
-            }
-        }
-        echo "<script>alert(\"Введите и логин и пароль\");</script>";
-    }
-} else {
-    echo "<script>alert(\"Нет аккаунтов. Зарегистрируйтесь!\");</script>";
+    if (!empty($login) && !empty($password)) {
+        $credFile = fopen("a+", "pass.txt");
+        $passHashe =password_hash($password, PASSWORD_DEFAULT);
+        fwrite($credFile, "$login{:}$passHashe");
+        fclose($credFile);
+        echo "<script>window.location='/lab5/login.php'</script>";
 }
 ?>
 
