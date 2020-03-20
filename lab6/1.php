@@ -7,7 +7,7 @@ $width = 40;
 $minHeight = 10;
 $maxHeight = 250;
 
-$font = 'C:\Users\diman\PhpstormProjects\lab9\lab6\arial.ttf';
+$font = 'C:\Users\diman\Desktop\php projects\php-labs-dont-look-here-ever-in-ur-life-\lab6\arial.ttf';
 
 $image = imagecreatetruecolor($width, $maxHeight);
 $white = imagecolorallocate($image, 255, 255, 255);
