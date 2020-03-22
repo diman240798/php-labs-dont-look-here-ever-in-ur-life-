@@ -3,6 +3,7 @@
 class BaseClass {
     protected $name;
     protected $prop = "lalala";
+    protected $className = "BaseClass";
 
     function __construct($name) {
         $this->name = $name;
@@ -28,7 +29,19 @@ class BaseClass {
 
     public function __call($name, $arguments) {
         print "Нельзя вызвать метод $name с аргументами $arguments</br>";
-        return "Ошибка вызова</br>";
+        return "Ошибка вызова метода $name</br>";
+    }
+
+    public function __clone() {
+        $this->name = "x$this->name";
+    }
+
+    public function __sleep() {
+        return array("prop", "name");
+    }
+
+    public function __wakeup() {
+        $this->className = "BaseClass";
     }
 }
 
@@ -57,3 +70,10 @@ print $obj;
 $obj->prop = "hmmm";
 "---".$obj->prop."+++";
 print $obj->missingMethod(1,2);
+
+$obj2 = clone $obj;
+
+print "Obj2 $obj2";
+$serialize = serialize($obj2);
+$objSer = unserialize($serialize);
+print "Obj Ser $objSer";
