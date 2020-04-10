@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <form>
+        <h2>Введите дату в американском формате. Мы ее отформатим!</h2>
+        <input id="number" value="Today 02.16.2014!"/>
+        <input class="attachedPreventDefault" type="submit" onclick="return checkRes();"/><br/>
+        <input id="result"/>
+    </form>
+</body>
+
+<script>
+    document.querySelector(".attachedPreventDefault").addEventListener("click", function(e) {
+        e.preventDefault();
+    });
+
+    function checkRes() {
+        let result = document.getElementById("result");
+        let number = document.getElementById("number").value;
+        let regx = RegExp(/\d\d\.\d\d\.\d\d\d\d/);
+        let array = regx.exec(number);
+        if (regx.test(number) && array != null) {
+            let date = array[0];
+            let dates = date.split('.');
+            let month = dates[0];
+            let day = dates[1];
+            let year = dates[2];
+            result.value = `Сегодня ${day}.${month}.${year}`;
+        } else {
+            result.value = "Incorrect Date:(";
+        }
+        return false;
+    }
+</script>
